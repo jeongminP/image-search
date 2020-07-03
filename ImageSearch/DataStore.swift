@@ -8,7 +8,7 @@
 
 import Foundation
 
-class DataManager {
+final class DataManager {
     static let shared: DataManager = DataManager()
     var searchResult: SearchResult?
 }

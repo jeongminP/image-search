@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -18,10 +18,10 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OUN-CQ-sh6">
-                        <rect key="frame" x="0.5" y="0.5" width="199" height="154"/>
+                        <rect key="frame" x="0.5" y="5" width="199" height="150"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZXW-sh-7sN">
-                        <rect key="frame" x="0.5" y="159.5" width="199" height="40"/>
+                        <rect key="frame" x="0.5" y="160" width="199" height="40"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="999" constant="40" id="7FP-9v-CkI"/>
                         </constraints>
@@ -33,12 +33,12 @@
             </view>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="ZXW-sh-7sN" secondAttribute="trailing" constant="0.5" id="ShP-Ad-dfZ"/>
-                <constraint firstItem="OUN-CQ-sh6" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="0.5" id="Y7g-KX-6vZ"/>
+                <constraint firstItem="OUN-CQ-sh6" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="Y7g-KX-6vZ"/>
                 <constraint firstItem="ZXW-sh-7sN" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="0.5" id="Zk6-xA-IdK"/>
                 <constraint firstItem="OUN-CQ-sh6" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="0.5" id="c48-1y-E4y"/>
                 <constraint firstAttribute="trailing" secondItem="OUN-CQ-sh6" secondAttribute="trailing" constant="0.5" id="dNK-30-W13"/>
                 <constraint firstItem="ZXW-sh-7sN" firstAttribute="top" secondItem="OUN-CQ-sh6" secondAttribute="bottom" constant="5" id="pdF-CI-xUZ"/>
-                <constraint firstAttribute="bottom" secondItem="ZXW-sh-7sN" secondAttribute="bottom" constant="0.5" id="v9g-Dr-uB3"/>
+                <constraint firstAttribute="bottom" secondItem="ZXW-sh-7sN" secondAttribute="bottom" id="v9g-Dr-uB3"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <connections>

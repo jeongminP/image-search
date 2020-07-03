@@ -8,17 +8,24 @@
 
 import UIKit
 
-class ImageCollectionViewCell: UICollectionViewCell {
-    @IBOutlet weak var thumbnailImageView: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
+final class ImageCollectionViewCell: UICollectionViewCell {
+    @IBOutlet weak private var thumbnailImageView: UIImageView?
+    @IBOutlet weak private var titleLabel: UILabel?
     
     override func awakeFromNib() {
         super.awakeFromNib()
     }
     
     override func prepareForReuse() {
-        thumbnailImageView.image = nil
+        thumbnailImageView?.image = nil
         super.prepareForReuse()
     }
-
+    
+    func setThumbnailImageView(image: UIImage) {
+        thumbnailImageView?.image = image
+    }
+    
+    func setTitleLabel(title: String) {
+        titleLabel?.text = title
+    }
 }
