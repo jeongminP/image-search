@@ -1,5 +1,5 @@
 //
-//  DataStore.swift
+//  SearchResult.swift
 //  ImageSearch
 //
 //  Created by 박정민 on 2020/07/02.
@@ -8,10 +8,10 @@
 
 import Foundation
 
-final class DataManager {
-    static let shared: DataManager = DataManager()
-    var searchResult: SearchResult?
-}
+//final class DataManager {   // DB 대용. 추후 삭제
+//    static let shared: DataManager = DataManager()
+//    var searchResult: SearchResult?
+//}
 
 struct SearchResult: Codable {
     let lastBuildData: String?

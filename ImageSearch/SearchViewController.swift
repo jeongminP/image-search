@@ -10,21 +10,7 @@ import UIKit
 import SnapKit
 
 final class SearchViewController: UIViewController {
-    // constants
-    private let clientID: String = "11z3u4TeXjtVowtCYWVp"
-    private let clientKEY: String = "iImsXl10PT"
-    private let maxStartValue = 1000
-    private let numOfDisplaysInPage = 20
-    
-    // Data management
-    private let jsonDecoder = JSONDecoder()
-    private let dataManager = DataManager.shared
-    
-    // Network property
-    private var hasNext: Bool = true
-    private var page: Int = 0
-    private var currentQuery: String?
-    private var items: [ImageInfo] = []
+    private let searchViewModel = SearchViewModel()
     
     // UI components
     private let searchController = UISearchController(searchResultsController: nil)
@@ -35,12 +21,21 @@ final class SearchViewController: UIViewController {
         navigationItem.title = "Image Search"
         view.backgroundColor = UIColor.white
         
+        bindViewModel()
         setupSearchVC()
         setupCollectionView()
         setupRefreshControl()
     }
     
     // MARK: - setup
+    private func bindViewModel() {
+        searchViewModel.items.bind({ (helloText) in
+            DispatchQueue.main.async {
+                self.imageCollectionView?.reloadData()
+            }
+        })
+    }
+    
     private func setupSearchVC() {
         searchController.searchBar.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -89,73 +84,22 @@ final class SearchViewController: UIViewController {
         refresh.endRefreshing()
         imageCollectionView?.reloadData()
     }
-    
-    // MARK: - Network Request
-    private func requestAPIToNaver(queryValue: String, startValue: Int = 1) {
-        let requestURL = makeRequestURL(queryValue: queryValue, startValue: startValue)
-        
-        let task = URLSession.shared.dataTask(with: requestURL) { [weak self] data, response, error in
-            guard let self = self,
-                error == nil,
-                let data = data,
-                let searchInfo: SearchResult = try? self.jsonDecoder.decode(SearchResult.self, from: data) else {
-                    print(error)
-                    return
-            }
-            if let total = searchInfo.total,
-                let start = searchInfo.start,
-                total >= start + self.numOfDisplaysInPage {
-                self.hasNext = true
-            }
-            self.dataManager.searchResult = searchInfo
-            self.items.append(contentsOf: searchInfo.items)
-            self.urlTaskDone()
-        }
-        task.resume()
-    }
-    
-    private func makeRequestURL(queryValue: String, startValue: Int = 1) -> URLRequest {
-        let query: String  = "https://openapi.naver.com/v1/search/image.json?query=\(queryValue)&start=\(startValue)&display=\(numOfDisplaysInPage)&sort=sim"
-        let encodedQuery: String = query.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!
-        let queryURL: URL = URL(string: encodedQuery)!
-        
-        var requestURL = URLRequest(url: queryURL)
-        requestURL.addValue(clientID, forHTTPHeaderField: "X-Naver-Client-Id")
-        requestURL.addValue(clientKEY, forHTTPHeaderField: "X-Naver-Client-Secret")
-        
-        return requestURL
-    }
-    
-    private func urlTaskDone() {    // TODO: - 이미지 다운로드 및 캐싱 구현
-        DispatchQueue.main.async {
-            self.imageCollectionView?.reloadData()
-        }
-    }
 }
 
 // MARK: - searchViewController
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let queryValue: String = searchController.searchBar.text,
-            !queryValue.isEmpty else {
-                return
-        }
         // scroll to top
-        if items.count > 0 {
+        if searchViewModel.numOfItems > 0 {
             imageCollectionView?.scrollToItem(at: IndexPath(item: 0, section: 0),
                                               at: .top, animated: false)
             view.layoutIfNeeded()
         }
         
-        clearQueryData(newQuery: queryValue)
-        requestAPIToNaver(queryValue: queryValue)
-    }
-    
-    private func clearQueryData(newQuery: String) {
-        currentQuery = newQuery
-        items = []
-        hasNext = true
-        page = 0
+        if let queryValue: String = searchController.searchBar.text,
+            !queryValue.isEmpty {
+            searchViewModel.searchButtonClicked(with: queryValue)
+        }
     }
 }
 
@@ -171,39 +115,31 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         guard let lastIndex = indexPaths.last?.item,
-            lastIndex > items.count - 4,
-            hasNext == true,
-            let queryValue = currentQuery else {
+            lastIndex > searchViewModel.numOfItems - 4 else {
                 return
         }
         
-        page += 1
-        requestAPIToNaver(queryValue: queryValue, startValue: page * numOfDisplaysInPage + 1)
+        searchViewModel.prfetchItems()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return items.count
+        return searchViewModel.numOfItems
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let item = items[indexPath.item]
-        
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCollectionViewCell", for: indexPath) as? ImageCollectionViewCell else {
             return UICollectionViewCell()
         }
         
-        if let thumbnailLink = item.thumbnail,
-            let imageURL = URL(string: thumbnailLink),
-            let imageData = try? Data(contentsOf: imageURL),
+        if let imageData = searchViewModel.thumbnailImageData(at: indexPath.item),
             let thumbnailImage = UIImage(data: imageData) {
             cell.setThumbnailImageView(image: thumbnailImage)
         }
         
-        if let title = item.title?.replacingOccurrences(of: "&quot;", with: "\'") {
+        if let title = searchViewModel.titleText(at: indexPath.item) {
             cell.setTitleLabel(title: title)
         }
         
         return cell
     }
-    
 }
