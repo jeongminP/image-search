@@ -20,6 +20,7 @@
 		2500D0FD24AD8306006EE185 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2500D0FC24AD8306006EE185 /* SearchResult.swift */; };
 		25F9331924AF3AC10079D976 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9331824AF3AC10079D976 /* SearchViewModel.swift */; };
 		25F9331B24B0C4370079D976 /* Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9331A24B0C4370079D976 /* Dynamic.swift */; };
+		25F9331D24B183E80079D976 /* WebImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9331C24B183E80079D976 /* WebImageDownloader.swift */; };
 		3D7221406227279CF90F6A7C /* Pods_ImageSearchTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D1F309FABD74964A3012E5 /* Pods_ImageSearchTests.framework */; };
 		987942B71C8EE053DBCE3FB7 /* Pods_ImageSearch_ImageSearchUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD39050C3838E6CFA26133BD /* Pods_ImageSearch_ImageSearchUITests.framework */; };
 		DB941BB774557E3AC8777CF6 /* Pods_ImageSearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C1D2DADCC1CE2970806078A /* Pods_ImageSearch.framework */; };
@@ -63,6 +64,7 @@
 		2500D0FC24AD8306006EE185 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		25F9331824AF3AC10079D976 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		25F9331A24B0C4370079D976 /* Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dynamic.swift; sourceTree = "<group>"; };
+		25F9331C24B183E80079D976 /* WebImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImageDownloader.swift; sourceTree = "<group>"; };
 		32B73C7DC47C8DEF39C9BC00 /* Pods-ImageSearchTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageSearchTests.release.xcconfig"; path = "Target Support Files/Pods-ImageSearchTests/Pods-ImageSearchTests.release.xcconfig"; sourceTree = "<group>"; };
 		558D5D224CA614366DC0FB69 /* Pods-ImageSearch-ImageSearchUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageSearch-ImageSearchUITests.debug.xcconfig"; path = "Target Support Files/Pods-ImageSearch-ImageSearchUITests/Pods-ImageSearch-ImageSearchUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DB326CE163291BF82E91B7B /* Pods-ImageSearch-ImageSearchUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageSearch-ImageSearchUITests.release.xcconfig"; path = "Target Support Files/Pods-ImageSearch-ImageSearchUITests/Pods-ImageSearch-ImageSearchUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -126,18 +128,16 @@
 		2500D0C724ACD40B006EE185 /* ImageSearch */ = {
 			isa = PBXGroup;
 			children = (
+				25F9332124B1F85B0079D976 /* Models */,
+				25F9332024B1F8450079D976 /* ViewModels */,
+				25F9331F24B1F8370079D976 /* Librarys */,
+				25F9331E24B1F80C0079D976 /* Views */,
 				2500D0C824ACD40B006EE185 /* AppDelegate.swift */,
 				2500D0CA24ACD40B006EE185 /* SceneDelegate.swift */,
-				2500D0CC24ACD40B006EE185 /* SearchViewController.swift */,
 				2500D0CE24ACD40B006EE185 /* Main.storyboard */,
 				2500D0D124ACD40F006EE185 /* Assets.xcassets */,
 				2500D0D324ACD40F006EE185 /* LaunchScreen.storyboard */,
 				2500D0D624ACD40F006EE185 /* Info.plist */,
-				2500D0F824AD8144006EE185 /* ImageCollectionViewCell.swift */,
-				2500D0F924AD8144006EE185 /* ImageCollectionViewCell.xib */,
-				2500D0FC24AD8306006EE185 /* SearchResult.swift */,
-				25F9331824AF3AC10079D976 /* SearchViewModel.swift */,
-				25F9331A24B0C4370079D976 /* Dynamic.swift */,
 			);
 			path = ImageSearch;
 			sourceTree = "<group>";
@@ -158,6 +158,41 @@
 				2500D0EC24ACD40F006EE185 /* Info.plist */,
 			);
 			path = ImageSearchUITests;
+			sourceTree = "<group>";
+		};
+		25F9331E24B1F80C0079D976 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2500D0CC24ACD40B006EE185 /* SearchViewController.swift */,
+				2500D0F824AD8144006EE185 /* ImageCollectionViewCell.swift */,
+				2500D0F924AD8144006EE185 /* ImageCollectionViewCell.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		25F9331F24B1F8370079D976 /* Librarys */ = {
+			isa = PBXGroup;
+			children = (
+				25F9331A24B0C4370079D976 /* Dynamic.swift */,
+				25F9331C24B183E80079D976 /* WebImageDownloader.swift */,
+			);
+			path = Librarys;
+			sourceTree = "<group>";
+		};
+		25F9332024B1F8450079D976 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				25F9331824AF3AC10079D976 /* SearchViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		25F9332124B1F85B0079D976 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2500D0FC24AD8306006EE185 /* SearchResult.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		81ACE1C8933E3DBD89088926 /* Frameworks */ = {
@@ -426,6 +461,7 @@
 				25F9331924AF3AC10079D976 /* SearchViewModel.swift in Sources */,
 				2500D0CD24ACD40B006EE185 /* SearchViewController.swift in Sources */,
 				2500D0C924ACD40B006EE185 /* AppDelegate.swift in Sources */,
+				25F9331D24B183E80079D976 /* WebImageDownloader.swift in Sources */,
 				25F9331B24B0C4370079D976 /* Dynamic.swift in Sources */,
 				2500D0FA24AD8144006EE185 /* ImageCollectionViewCell.swift in Sources */,
 				2500D0FD24AD8306006EE185 /* SearchResult.swift in Sources */,

@@ -131,9 +131,8 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewData
             return UICollectionViewCell()
         }
         
-        if let imageData = searchViewModel.thumbnailImageData(at: indexPath.item),
-            let thumbnailImage = UIImage(data: imageData) {
-            cell.setThumbnailImageView(image: thumbnailImage)
+        searchViewModel.loadThumbnailImage(at: indexPath.item) { image in
+            cell.setThumbnailImageView(image: image)
         }
         
         if let title = searchViewModel.titleText(at: indexPath.item) {

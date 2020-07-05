@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 final class SearchViewModel {
     // constants
@@ -59,7 +60,7 @@ final class SearchViewModel {
     }
     
     private func urlTaskDone() {
-        // TODO: - 이미지 다운로드 및 캐싱 구현
+        
     }
     
     // MARK: - search triggered
@@ -90,15 +91,23 @@ final class SearchViewModel {
         return items.value.count
     }
     
-    func thumbnailImageData(at index: Int) -> Data? {
+    func loadThumbnailImage(at index: Int, completionHandler: @escaping (UIImage)->()) {
         let item = items.value[index]
-        if let thumbnailLink = item.thumbnail,
-            let imageURL = URL(string: thumbnailLink),
-            let imageData = try? Data(contentsOf: imageURL) {
-            
-            return imageData
+        guard let thumbnailLink = item.thumbnail,
+            let imageURL = URL(string: thumbnailLink) else {
+                return
         }
-        return nil
+            
+        WebImageDownloader.shared.downloadImage(with: imageURL) { image, error in
+            guard error == nil,
+                let image = image else {
+                    return
+            }
+            
+            DispatchQueue.main.async {
+                completionHandler(image)
+            }
+        }
     }
     
     func titleText(at index: Int) -> String? {
