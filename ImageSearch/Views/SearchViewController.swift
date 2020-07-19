@@ -9,31 +9,64 @@
 import UIKit
 import SnapKit
 
-final class SearchViewController: UIViewController {
-    private let searchViewModel = SearchViewModel()
+final class SearchViewController: UIViewController, View {
+    @objc dynamic var viewModel = SearchViewModel()
+    var observer: Observer?
     
     // UI components
     private let searchController = UISearchController(searchResultsController: nil)
     private var imageCollectionView: UICollectionView?
     
+    let historyView = SearchHistoryView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Image Search"
         view.backgroundColor = UIColor.white
+        setupSettingButton()
         
         bindViewModel()
         setupSearchVC()
         setupCollectionView()
         setupRefreshControl()
+        setupHistoryView()
     }
     
     // MARK: - setup
-    private func bindViewModel() {
-        searchViewModel.items.bind({ (helloText) in
+    func bindViewModel() {
+        observer = Observer()
+        observer?.observe(viewModel, target: \.isChanged) { [weak self] viewModel, change in
+            guard let self = self,
+                viewModel.isChanged else {
+                return
+            }
+
             DispatchQueue.main.async {
                 self.imageCollectionView?.reloadData()
             }
-        })
+        }
+    }
+    
+    private func setupSettingButton() {
+        let button = UIButton(type: .custom)
+        setButtonImage(with: UIImage(named: "Ion_ios_settings"), of: button)
+        button.addTarget(self, action: #selector(settingButtonClicked), for: .touchUpInside)
+        let barButton = UIBarButtonItem(customView: button)
+        
+        self.navigationItem.rightBarButtonItem = barButton
+    }
+    
+    private func setupHistoryView() {
+        view.addSubview(historyView)
+        historyView.delegate = self
+        historyView.isHidden = true
+        
+        historyView.snp.makeConstraints{ make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(1)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
+            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
+        }
     }
     
     private func setupSearchVC() {
@@ -84,13 +117,35 @@ final class SearchViewController: UIViewController {
         refresh.endRefreshing()
         imageCollectionView?.reloadData()
     }
+    
+    @objc private func settingButtonClicked() {
+        let settingVC = SettingViewController()
+        present(settingVC, animated: true, completion: nil)
+    }
+    
+    private func setButtonImage(with image: UIImage?, of button: UIButton?) {
+        guard let image = image, let button = button else { return }
+        
+        let templateImage = resizedImage(at: image, for: CGSize(width: 30, height: 30))
+            .withRenderingMode(.alwaysTemplate)
+        button.setImage(templateImage, for: .normal)
+        button.tintColor = UIColor.darkGray
+    }
+    
+    private func resizedImage(at image: UIImage, for size: CGSize) -> UIImage {
+        let renderer = UIGraphicsImageRenderer(size: size)
+        return renderer.image { (context) in
+            image.draw(in: CGRect(origin: .zero, size: size))
+        }
+    }
 }
 
 // MARK: - searchViewController
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        historyView.isHidden = true
         // scroll to top
-        if searchViewModel.numOfItems > 0 {
+        if viewModel.numOfItems > 0 {
             imageCollectionView?.scrollToItem(at: IndexPath(item: 0, section: 0),
                                               at: .top, animated: false)
             view.layoutIfNeeded()
@@ -98,8 +153,18 @@ extension SearchViewController: UISearchBarDelegate {
         
         if let queryValue: String = searchController.searchBar.text,
             !queryValue.isEmpty {
-            searchViewModel.searchButtonClicked(with: queryValue)
+            historyView.searchButtonClicked(with: queryValue)
+            viewModel.searchButtonClicked(with: queryValue)
         }
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        historyView.willAppear()
+        historyView.isHidden = false
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        historyView.isHidden = true
     }
 }
 
@@ -115,15 +180,15 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         guard let lastIndex = indexPaths.last?.item,
-            lastIndex > searchViewModel.numOfItems - 4 else {
+            lastIndex > viewModel.numOfItems - 4 else {
                 return
         }
         
-        searchViewModel.prfetchItems()
+        viewModel.prfetchItems()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return searchViewModel.numOfItems
+        return viewModel.numOfItems
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -131,14 +196,22 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewData
             return UICollectionViewCell()
         }
         
-        searchViewModel.loadThumbnailImage(at: indexPath.item) { image in
+        viewModel.loadThumbnailImage(at: indexPath.item) { image in
             cell.setThumbnailImageView(image: image)
         }
         
-        if let title = searchViewModel.titleText(at: indexPath.item) {
+        if let title = viewModel.titleText(at: indexPath.item) {
             cell.setTitleLabel(title: title)
         }
         
         return cell
+    }
+}
+
+extension SearchViewController: SearchHistoryViewDelegate {
+    func search(with keyword: String) {
+        searchController.searchBar.text = keyword
+        searchBarSearchButtonClicked(searchController.searchBar)
+        searchController.searchBar.resignFirstResponder()
     }
 }

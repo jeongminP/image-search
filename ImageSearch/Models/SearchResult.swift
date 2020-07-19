@@ -21,7 +21,7 @@ struct SearchResult: Codable {
     let items: [ImageInfo]
 }
 
-struct ImageInfo: Codable {
+struct ImageInfo: Codable, Equatable {
     let title: String?
     let link: String?
     let thumbnail: String?

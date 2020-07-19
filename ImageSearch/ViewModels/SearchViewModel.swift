@@ -9,7 +9,8 @@
 import Foundation
 import UIKit
 
-final class SearchViewModel {
+final class SearchViewModel: NSObject, ViewModel {
+    
     // constants
     private let clientID: String = "11z3u4TeXjtVowtCYWVp"
     private let clientKEY: String = "iImsXl10PT"
@@ -22,7 +23,17 @@ final class SearchViewModel {
     private var hasNext: Bool = true
     private var page: Int = 0
     private var currentQuery: String?
-    private(set) var items: Dynamic<[ImageInfo]> = Dynamic([ImageInfo]())
+    
+    var model: [ImageInfo] = [] {
+        didSet(oldVal) {
+            if oldVal != model {
+                isChanged = true
+            } else {
+                isChanged = false
+            }
+        }
+    }
+    @objc dynamic var isChanged: Bool = false
     
     // MARK: - Network Request
     func requestAPIToNaver(queryValue: String, startValue: Int = 1) {
@@ -41,7 +52,7 @@ final class SearchViewModel {
                 total >= start + self.numOfDisplaysInPage {
                 self.hasNext = true
             }
-            self.items.value.append(contentsOf: searchInfo.items)
+            self.model.append(contentsOf: searchInfo.items)
             self.urlTaskDone()
         }
         task.resume()
@@ -71,7 +82,7 @@ final class SearchViewModel {
     
     private func clearQueryData(newQuery: String) {
         currentQuery = newQuery
-        items.value = []
+        model = []
         hasNext = true
         page = 0
     }
@@ -88,14 +99,14 @@ final class SearchViewModel {
     }
     
     var numOfItems: Int {
-        return items.value.count
+        return model.count
     }
     
     func loadThumbnailImage(at index: Int, completionHandler: @escaping (UIImage)->()) {
-        let item = items.value[index]
+        let item = model[index]
         guard let thumbnailLink = item.thumbnail,
             let imageURL = URL(string: thumbnailLink) else {
-                return
+            return
         }
             
         WebImageDownloader.shared.downloadImage(with: imageURL) { image, error in
@@ -111,7 +122,7 @@ final class SearchViewModel {
     }
     
     func titleText(at index: Int) -> String? {
-        let item = items.value[index]
+        let item = model[index]
         let title = item.title?.replacingOccurrences(of: "&quot;", with: "\'")
         return title
     }

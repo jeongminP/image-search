@@ -14,6 +14,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        var defaultSetting: [String: Bool] = [:]
+        SectionType.allCases.forEach {
+            defaultSetting[$0.userDefaultExposingKey] = true
+        }
+        UserDefaults.standard.register(defaults: defaultSetting)
+        
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         window?.rootViewController = UINavigationController(rootViewController: SearchViewController())
