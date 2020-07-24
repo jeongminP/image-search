@@ -38,6 +38,7 @@
 		CE7F233724C2942700B01557 /* SettingSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE7F233524C2942700B01557 /* SettingSwitchCell.xib */; };
 		CE7F233924C2B9D200B01557 /* SectionExposeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F233824C2B9D100B01557 /* SectionExposeInfo.swift */; };
 		CE7F233B24C2BA5700B01557 /* SettingSwitchCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F233A24C2BA5700B01557 /* SettingSwitchCellViewModel.swift */; };
+		CE7F234C24C5724600B01557 /* DiskCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F234B24C5724600B01557 /* DiskCache.swift */; };
 		DB941BB774557E3AC8777CF6 /* Pods_ImageSearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C1D2DADCC1CE2970806078A /* Pods_ImageSearch.framework */; };
 /* End PBXBuildFile section */
 
@@ -100,6 +101,7 @@
 		CE7F233524C2942700B01557 /* SettingSwitchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingSwitchCell.xib; sourceTree = "<group>"; };
 		CE7F233824C2B9D100B01557 /* SectionExposeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionExposeInfo.swift; sourceTree = "<group>"; };
 		CE7F233A24C2BA5700B01557 /* SettingSwitchCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSwitchCellViewModel.swift; sourceTree = "<group>"; };
+		CE7F234B24C5724600B01557 /* DiskCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskCache.swift; sourceTree = "<group>"; };
 		D6D1F309FABD74964A3012E5 /* Pods_ImageSearchTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImageSearchTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6B02D9BC808E08553146A89 /* Pods-ImageSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageSearch.release.xcconfig"; path = "Target Support Files/Pods-ImageSearch/Pods-ImageSearch.release.xcconfig"; sourceTree = "<group>"; };
 		ECCEE73038D1E011421977E0 /* Pods-ImageSearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageSearch.debug.xcconfig"; path = "Target Support Files/Pods-ImageSearch/Pods-ImageSearch.debug.xcconfig"; sourceTree = "<group>"; };
@@ -211,9 +213,10 @@
 			isa = PBXGroup;
 			children = (
 				25F9331A24B0C4370079D976 /* Dynamic.swift */,
-				25F9331C24B183E80079D976 /* WebImageDownloader.swift */,
 				CE70C00F24B45D86004C2C3D /* Observer.swift */,
 				CE7F22FA24BC89E100B01557 /* HistoryDBManager.swift */,
+				25F9331C24B183E80079D976 /* WebImageDownloader.swift */,
+				CE7F234B24C5724600B01557 /* DiskCache.swift */,
 			);
 			path = Librarys;
 			sourceTree = "<group>";
@@ -524,6 +527,7 @@
 				CE7F22FD24BC8C4700B01557 /* SearchHistoryModel.swift in Sources */,
 				2500D0FD24AD8306006EE185 /* SearchResult.swift in Sources */,
 				CE70C01624B58483004C2C3D /* View.swift in Sources */,
+				CE7F234C24C5724600B01557 /* DiskCache.swift in Sources */,
 				CE7F233624C2942700B01557 /* SettingSwitchCell.swift in Sources */,
 				2500D0CB24ACD40B006EE185 /* SceneDelegate.swift in Sources */,
 			);

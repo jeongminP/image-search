@@ -1,0 +1,6 @@
+Pods/
+*.xcuserstate
+xcuserdata
+Podfile.lock
+project.pbxproj
+

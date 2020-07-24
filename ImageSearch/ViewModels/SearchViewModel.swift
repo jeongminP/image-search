@@ -121,6 +121,15 @@ final class SearchViewModel: NSObject, ViewModel {
         }
     }
     
+    func imageURL(at index: Int) -> URL? {
+        let item = model[index]
+        guard let thumbnailLink = item.thumbnail,
+            let imageURL = URL(string: thumbnailLink) else {
+            return nil
+        }
+        return imageURL
+    }
+    
     func titleText(at index: Int) -> String? {
         let item = model[index]
         let title = item.title?.replacingOccurrences(of: "&quot;", with: "\'")

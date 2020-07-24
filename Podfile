@@ -7,6 +7,7 @@ target 'ImageSearch' do
     pod 'RealmSwift'
     pod 'SnapKit', '~> 5.0.0'
     pod 'FLEX', :configurations => ['Debug']
+    pod 'Kingfisher', '~> 5.0'
 
   # Pods for ImageSearch
 

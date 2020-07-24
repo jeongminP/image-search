@@ -43,7 +43,7 @@ final class HistoryDBManager {
         dbPath = docPath+"/"+dbName
 
         if sqlite3_open(dbPath, &db) == SQLITE_OK {
-            print("Successfully opened connection to database at \(dbPath)")
+//            print("Successfully opened connection to database at \(dbPath)")
         } else {
             print("Unable to open database. Verify that you created the directory described " +
                 "in the Getting Started section.")
@@ -53,7 +53,7 @@ final class HistoryDBManager {
             var createTableStatement: OpaquePointer? = nil
             if sqlite3_prepare_v2(db, sqlCreate, -1, &createTableStatement, nil) == SQLITE_OK {
                 if sqlite3_step(createTableStatement) == SQLITE_DONE {
-                    print("History table created.")
+//                    print("History table created.")
                 } else {
                     print("History table could not be created.")
                 }
@@ -73,7 +73,7 @@ final class HistoryDBManager {
             sqlite3_bind_text(insertStmt, 2, (date as NSString).utf8String, -1, nil)
             
             if sqlite3_step(insertStmt) == SQLITE_DONE {
-                print("Successfully inserted row.")
+//                print("Successfully inserted row.")
             } else {
                 print("Could not insert row.")
             }
@@ -127,7 +127,7 @@ final class HistoryDBManager {
             sqlite3_bind_int(updateStmt, 3, Int32(id))
             
             if sqlite3_step(updateStmt) == SQLITE_DONE {
-                print("Successfully updated row.")
+//                print("Successfully updated row.")
             } else {
                 print("Could not update row.")
             }
